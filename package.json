@@ -3,6 +3,10 @@
   "displayName": "Create Matching CSS File",
   "description": "Creates a .css file based on current open editor name",
   "publisher": "NathanMinchow",
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/nspenner/create-matching-css-vscode"
+  },
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.41.0"
