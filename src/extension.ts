@@ -15,18 +15,8 @@ export function activate(context: vscode.ExtensionContext) {
           vscode.window.activeTextEditor?.document.fileName
         ).name;
 
-        fs.writeFile(
-          path.join(folderPath, `${openedFileName}.css`),
-          "",
-          (err: any) => {
-            if (err) {
-              console.log(err);
-              return vscode.window.showErrorMessage(
-                "Failed to create css file!"
-              );
-            }
-          }
-        );
+        createFile(folderPath, openedFileName);
+
         vscode.window.showInformationMessage(`${openedFileName}.css created!`);
       } else {
         vscode.window.showInformationMessage(
@@ -34,8 +24,36 @@ export function activate(context: vscode.ExtensionContext) {
         );
       }
     }
+  )
+  let createCssNotificationExplorer = vscode.commands.registerCommand(
+    "extension.createCSSContextMenu",
+    (uri: vscode.Uri) => {
+      const parseResult = path.parse(uri.fsPath);
+      const fileName = parseResult.name;
+      let folderPath = path.dirname(uri.fsPath);
+      if (parseResult.ext === "") {
+        // We're in a folder
+        folderPath = uri.fsPath;
+      }
+      createFile(folderPath, fileName);
+    }
+  );
+}
+
+function createFile(directory: string, fileName: string) {
+  fs.writeFile(
+    path.join(directory, `${fileName}.css`),
+    "",
+    (err: any) => {
+      if (err) {
+        console.log(err);
+        return vscode.window.showErrorMessage(
+          "Failed to create css file!"
+        );
+      }
+    }
   );
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }

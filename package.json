@@ -15,7 +15,8 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:extension.createCSS"
+    "onCommand:extension.createCSS",
+    "onCommand:extension.createCSSContextMenu"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -23,8 +24,20 @@
       {
         "command": "extension.createCSS",
         "title": "Create Matching .CSS File"
+      },
+      {
+        "command": "extension.createCSSContextMenu",
+        "title": "Create Matching .CSS File"
       }
-    ]
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "extension.createCSSContextMenu",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
