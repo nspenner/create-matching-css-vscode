@@ -24,7 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
         );
       }
     }
-  )
+  );
   let createCssNotificationExplorer = vscode.commands.registerCommand(
     "extension.createCSSContextMenu",
     (uri: vscode.Uri) => {
@@ -41,19 +41,23 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 function createFile(directory: string, fileName: string) {
-  fs.writeFile(
-    path.join(directory, `${fileName}.css`),
-    "",
-    (err: any) => {
-      if (err) {
-        console.log(err);
-        return vscode.window.showErrorMessage(
-          "Failed to create css file!"
-        );
-      }
+  const filePath = path.join(directory, `${fileName}.css`);
+  // Check for existing css file first
+  if (fs.existsSync(filePath)) {
+    console.log("css file already exists – run anyway?");
+    vscode.window.showErrorMessage(
+      `${fileName}.css already exists in this directory.`
+    );
+    return;
+  }
+
+  fs.writeFile(path.join(directory, `${fileName}.css`), "", (err: any) => {
+    if (err) {
+      console.log(err);
+      return vscode.window.showErrorMessage("Failed to create css file!");
     }
-  );
+  });
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() { }
+export function deactivate() {}
